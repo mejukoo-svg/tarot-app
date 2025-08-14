@@ -1,6 +1,8 @@
 import { supabase } from '../lib/supabase';
 import { tarotCardsData } from '../data/tarotCards';
 
+// Fix for Vercel CI build - ensuring all unused vars are properly handled
+
 /**
  * Supabase에 78장의 타로카드 데이터를 삽입하는 함수
  * @returns {Promise<{success: boolean, message: string, count?: number}>}
