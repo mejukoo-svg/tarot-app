@@ -106,10 +106,14 @@ REACT_APP_SUPABASE_URL=your_supabase_project_url
 REACT_APP_SUPABASE_ANON_KEY=your_supabase_anon_key
 ```
 
-**Neon 사용 시:**
+**Neon 사용 시 (Netlify 배포 권장):**
 ```env
 REACT_APP_NEON_DATABASE_URL=your_neon_database_url
-REACT_APP_NEON_API_KEY=your_neon_api_key
+# 또는 Netlify 환경에서는
+NETLIFY_DATABASE_URL=your_neon_database_url
+
+# 데이터베이스 타입 명시 (선택사항)
+REACT_APP_DATABASE_TYPE=neon
 ```
 
 ### 4. 개발 서버 실행
