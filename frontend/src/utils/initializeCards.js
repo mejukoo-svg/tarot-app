@@ -69,7 +69,8 @@ export async function initializeTarotCards() {
     }
 
     // 4. 삽입 결과 확인
-    const { data: finalCheck, error: finalError } = await supabase
+    // eslint-disable-next-line no-unused-vars
+    const { data: _finalCheck, error: finalError } = await supabase
       .from('tarot_cards')
       .select('count');
 
@@ -99,7 +100,8 @@ export async function initializeTarotCards() {
  */
 export async function checkTarotCardsExist() {
   try {
-    const { data, error } = await supabase
+    // eslint-disable-next-line no-unused-vars
+    const { data: _data, error } = await supabase
       .from('tarot_cards')
       .select('id')
       .limit(1);
