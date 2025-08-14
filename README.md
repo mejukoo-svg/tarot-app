@@ -75,7 +75,9 @@ cd tarot-app/frontend
 npm install
 ```
 
-### 2. Supabase 프로젝트 설정
+### 2. 데이터베이스 설정 (두 가지 옵션 중 선택)
+
+#### 옵션 A: Supabase (권장)
 
 1. [Supabase](https://supabase.com) 계정 생성 및 새 프로젝트 생성
 2. 데이터베이스 설정:
@@ -85,13 +87,29 @@ npm install
    ```
 3. Project Settings > API에서 URL과 anon key 확인
 
+#### 옵션 B: Neon Database
+
+1. [Neon](https://neon.tech) 계정 생성 및 새 프로젝트 생성
+2. 데이터베이스 설정:
+   ```sql
+   -- neon/schema.sql 파일의 내용을 Neon SQL Editor에서 실행
+   ```
+3. Connection Details에서 Database URL과 API key 확인
+
 ### 3. 환경 변수 설정
 
-`.env.local` 파일을 수정하여 Supabase 정보 입력:
+`.env.local` 파일을 생성하여 데이터베이스 정보 입력:
 
+**Supabase 사용 시:**
 ```env
 REACT_APP_SUPABASE_URL=your_supabase_project_url
 REACT_APP_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
+
+**Neon 사용 시:**
+```env
+REACT_APP_NEON_DATABASE_URL=your_neon_database_url
+REACT_APP_NEON_API_KEY=your_neon_api_key
 ```
 
 ### 4. 개발 서버 실행

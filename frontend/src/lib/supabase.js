@@ -1,16 +1,38 @@
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = process.env.REACT_APP_SUPABASE_URL
-const supabaseAnonKey = process.env.REACT_APP_SUPABASE_ANON_KEY
+// Supabase 또는 Neon 데이터베이스 연결 설정
+const supabaseUrl = process.env.REACT_APP_SUPABASE_URL || process.env.REACT_APP_NEON_DATABASE_URL
+const supabaseAnonKey = process.env.REACT_APP_SUPABASE_ANON_KEY || process.env.REACT_APP_NEON_API_KEY
 
 // 환경 변수 검증
 if (!supabaseUrl || !supabaseAnonKey) {
-  console.warn('Supabase 환경 변수가 설정되지 않았습니다. 데모 모드로 실행됩니다.')
+  console.warn('데이터베이스 환경 변수가 설정되지 않았습니다.')
+  console.warn('다음 중 하나를 설정하세요:')
+  console.warn('- REACT_APP_SUPABASE_URL + REACT_APP_SUPABASE_ANON_KEY (Supabase)')
+  console.warn('- REACT_APP_NEON_DATABASE_URL + REACT_APP_NEON_API_KEY (Neon)')
 }
 
 export const supabase = supabaseUrl && supabaseAnonKey 
   ? createClient(supabaseUrl, supabaseAnonKey)
   : null
+
+// 데이터베이스 연결 상태 표시
+export function getDatabaseInfo() {
+  if (supabaseUrl && supabaseAnonKey) {
+    const dbType = supabaseUrl.includes('supabase') ? 'Supabase' : 
+                   supabaseUrl.includes('neon') ? 'Neon' : 'PostgreSQL'
+    return {
+      connected: true,
+      type: dbType,
+      url: supabaseUrl
+    }
+  }
+  return {
+    connected: false,
+    type: null,
+    url: null
+  }
+}
 
 // 타로 카드 데이터 초기화 함수
 export async function initializeTarotCards(tarotCardsData) {

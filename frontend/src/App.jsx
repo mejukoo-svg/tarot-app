@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { supabase } from './lib/supabase';
+import { supabase, getDatabaseInfo } from './lib/supabase';
 import { initializeTarotCards, checkTarotCardsExist } from './utils/initializeCards';
 import TarotBoard from './components/TarotBoard';
 
@@ -124,14 +124,22 @@ function App() {
   const [cardsCount, setCardsCount] = useState(0);
   const [isInitializing, setIsInitializing] = useState(false);
 
+  // React 앱이 로드되면 로딩 화면 숨기기
+  useEffect(() => {
+    const loadingScreen = document.getElementById('loading-screen');
+    if (loadingScreen) {
+      loadingScreen.style.display = 'none';
+    }
+  }, []);
+
   useEffect(() => {
     // Supabase 연결 테스트 및 카드 데이터 확인
     const testSupabaseConnection = async () => {
       try {
-        // Supabase가 설정되지 않은 경우
+        // 데이터베이스가 설정되지 않은 경우
         if (!supabase) {
           setSupabaseStatus('error');
-          setConnectionMessage('⚠️ Supabase 환경 변수가 설정되지 않았습니다. 관리자에게 문의하세요.');
+          setConnectionMessage('⚠️ 데이터베이스 환경 변수가 설정되지 않았습니다.');
           return;
         }
 
@@ -150,17 +158,19 @@ function App() {
         setCardsExist(cardStatus.exists);
         setCardsCount(cardStatus.count);
         
+        const dbInfo = getDatabaseInfo();
         setSupabaseStatus('connected');
         if (cardStatus.exists) {
-          setConnectionMessage(`✨ Supabase 연결 성공! (${cardStatus.count}장의 카드 데이터 존재)`);
+          setConnectionMessage(`✨ ${dbInfo.type} 연결 성공! (${cardStatus.count}장의 카드 데이터 존재)`);
         } else {
-          setConnectionMessage('✨ Supabase 연결 성공! (카드 데이터 초기화 필요)');
+          setConnectionMessage(`✨ ${dbInfo.type} 연결 성공! (카드 데이터 초기화 필요)`);
         }
-        console.log('✅ Supabase 연결 성공, 카드 데이터:', cardStatus);
+        console.log(`✅ ${dbInfo.type} 연결 성공, 카드 데이터:`, cardStatus);
       } catch (error) {
+        const dbInfo = getDatabaseInfo();
         setSupabaseStatus('error');
-        setConnectionMessage(`❌ Supabase 연결 실패: ${error.message}`);
-        console.error('❌ Supabase 연결 오류:', error);
+        setConnectionMessage(`❌ ${dbInfo.type || '데이터베이스'} 연결 실패: ${error.message}`);
+        console.error('❌ 데이터베이스 연결 오류:', error);
       }
     };
 
