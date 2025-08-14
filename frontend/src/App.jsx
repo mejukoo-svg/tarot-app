@@ -128,6 +128,13 @@ function App() {
     // Supabase 연결 테스트 및 카드 데이터 확인
     const testSupabaseConnection = async () => {
       try {
+        // Supabase가 설정되지 않은 경우
+        if (!supabase) {
+          setSupabaseStatus('error');
+          setConnectionMessage('⚠️ Supabase 환경 변수가 설정되지 않았습니다. 관리자에게 문의하세요.');
+          return;
+        }
+
         // 기본 연결 테스트
         const { error: connectionError } = await supabase
           .from('tarot_cards')

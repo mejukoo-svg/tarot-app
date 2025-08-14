@@ -3,7 +3,14 @@ import { createClient } from '@supabase/supabase-js'
 const supabaseUrl = process.env.REACT_APP_SUPABASE_URL
 const supabaseAnonKey = process.env.REACT_APP_SUPABASE_ANON_KEY
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+// 환경 변수 검증
+if (!supabaseUrl || !supabaseAnonKey) {
+  console.warn('Supabase 환경 변수가 설정되지 않았습니다. 데모 모드로 실행됩니다.')
+}
+
+export const supabase = supabaseUrl && supabaseAnonKey 
+  ? createClient(supabaseUrl, supabaseAnonKey)
+  : null
 
 // 타로 카드 데이터 초기화 함수
 export async function initializeTarotCards(tarotCardsData) {

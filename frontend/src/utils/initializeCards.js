@@ -101,6 +101,10 @@ export async function initializeTarotCards() {
  */
 export async function checkTarotCardsExist() {
   try {
+    if (!supabase) {
+      return { exists: false, count: 0 };
+    }
+
     const { error } = await supabase
       .from('tarot_cards')
       .select('id')
@@ -157,6 +161,11 @@ export async function getCardByNumber(cardNumber) {
  */
 export async function getAllTarotCards() {
   try {
+    if (!supabase) {
+      console.warn('Supabase가 설정되지 않았습니다. 빈 배열을 반환합니다.');
+      return [];
+    }
+
     const { data, error } = await supabase
       .from('tarot_cards')
       .select('*')
