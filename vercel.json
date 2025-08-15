@@ -1,5 +1,5 @@
 {
-  "buildCommand": "cd frontend && DISABLE_ESLINT_PLUGIN=true CI=false npm run build",
+  "buildCommand": "cd frontend && npm run build",
   "outputDirectory": "frontend/build",
   "installCommand": "cd frontend && npm install",
   "devCommand": "cd frontend && npm start",
@@ -7,7 +7,8 @@
   "env": {
     "CI": "false",
     "DISABLE_ESLINT_PLUGIN": "true",
-    "GENERATE_SOURCEMAP": "false"
+    "GENERATE_SOURCEMAP": "false",
+    "ESLINT_NO_DEV_ERRORS": "true"
   },
   "rewrites": [
     {
