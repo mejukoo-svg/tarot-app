@@ -1,7 +1,5 @@
-import { db, dbInfo, supabase, neonHelpers } from '../lib/database';
+import { supabase } from '../lib/supabase';
 import { tarotCardsData } from '../data/tarotCards';
-
-// Fix for Vercel CI build - ensuring all unused vars are properly handled
 
 /**
  * Supabase에 78장의 타로카드 데이터를 삽입하는 함수
@@ -96,43 +94,35 @@ export async function initializeTarotCards() {
 }
 
 /**
- * 타로카드 데이터 존재 여부 확인 (통합 데이터베이스 지원)
+ * 타로카드 데이터 존재 여부 확인
  * @returns {Promise<{exists: boolean, count: number}>}
  */
 export async function checkTarotCardsExist() {
   try {
-    if (!db || !dbInfo.connected) {
+    if (!supabase) {
       return { exists: false, count: 0 };
     }
 
-    if (dbInfo.driver === 'neon-serverless') {
-      // Neon 데이터베이스 사용
-      return await neonHelpers.checkTarotCardsExist();
-    } else if (dbInfo.driver === 'supabase-js') {
-      // Supabase 사용
-      const { error } = await supabase
-        .from('tarot_cards')
-        .select('id')
-        .limit(1);
+    const { error } = await supabase
+      .from('tarot_cards')
+      .select('id')
+      .limit(1);
 
-      if (error) {
-        if (error.message.includes('relation "tarot_cards" does not exist')) {
-          return { exists: false, count: 0 };
-        }
-        throw error;
+    if (error) {
+      if (error.message.includes('relation "tarot_cards" does not exist')) {
+        return { exists: false, count: 0 };
       }
-
-      const { count } = await supabase
-        .from('tarot_cards')
-        .select('*', { count: 'exact', head: true });
-
-      return {
-        exists: count > 0,
-        count: count || 0
-      };
+      throw error;
     }
 
-    return { exists: false, count: 0 };
+    const { count } = await supabase
+      .from('tarot_cards')
+      .select('*', { count: 'exact', head: true });
+
+    return {
+      exists: count > 0,
+      count: count || 0
+    };
   } catch (error) {
     console.error('카드 데이터 확인 오류:', error);
     return { exists: false, count: 0 };
@@ -164,34 +154,26 @@ export async function getCardByNumber(cardNumber) {
 }
 
 /**
- * 모든 타로카드 데이터 조회 (통합 데이터베이스 지원)
+ * 모든 타로카드 데이터 조회
  * @returns {Promise<Array>}
  */
 export async function getAllTarotCards() {
   try {
-    if (!db || !dbInfo.connected) {
-      console.warn('데이터베이스가 설정되지 않았습니다. 빈 배열을 반환합니다.');
+    if (!supabase) {
+      console.warn('Supabase가 설정되지 않았습니다. 빈 배열을 반환합니다.');
       return [];
     }
 
-    if (dbInfo.driver === 'neon-serverless') {
-      // Neon 데이터베이스 사용
-      return await neonHelpers.getAllTarotCards();
-    } else if (dbInfo.driver === 'supabase-js') {
-      // Supabase 사용
-      const { data, error } = await supabase
-        .from('tarot_cards')
-        .select('*')
-        .order('card_number');
+    const { data, error } = await supabase
+      .from('tarot_cards')
+      .select('*')
+      .order('card_number');
 
-      if (error) {
-        throw error;
-      }
-
-      return data || [];
+    if (error) {
+      throw error;
     }
 
-    return [];
+    return data || [];
   } catch (error) {
     console.error('전체 카드 조회 오류:', error);
     return [];

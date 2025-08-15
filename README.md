@@ -28,8 +28,8 @@
 - **Row Level Security** - 데이터 보안 정책
 
 ### Deployment
-- **Vercel** - 프론트엔드 배포 (권장)
-- **Supabase Hosting** - 데이터베이스 및 API
+- **Vercel** - 프론트엔드 배포
+- **Supabase** - 데이터베이스 및 API
 
 ## 📁 프로젝트 구조
 
@@ -75,9 +75,7 @@ cd tarot-app/frontend
 npm install
 ```
 
-### 2. 데이터베이스 설정 (두 가지 옵션 중 선택)
-
-#### 옵션 A: Supabase (권장)
+### 2. 데이터베이스 설정
 
 1. [Supabase](https://supabase.com) 계정 생성 및 새 프로젝트 생성
 2. 데이터베이스 설정:
@@ -87,33 +85,13 @@ npm install
    ```
 3. Project Settings > API에서 URL과 anon key 확인
 
-#### 옵션 B: Neon Database
-
-1. [Neon](https://neon.tech) 계정 생성 및 새 프로젝트 생성
-2. 데이터베이스 설정:
-   ```sql
-   -- neon/schema.sql 파일의 내용을 Neon SQL Editor에서 실행
-   ```
-3. Connection Details에서 Database URL과 API key 확인
-
 ### 3. 환경 변수 설정
 
-`.env.local` 파일을 생성하여 데이터베이스 정보 입력:
+`.env.local` 파일을 생성하여 Supabase 정보 입력:
 
-**Supabase 사용 시:**
 ```env
 REACT_APP_SUPABASE_URL=your_supabase_project_url
 REACT_APP_SUPABASE_ANON_KEY=your_supabase_anon_key
-```
-
-**Neon 사용 시 (Netlify 배포 권장):**
-```env
-REACT_APP_NEON_DATABASE_URL=your_neon_database_url
-# 또는 Netlify 환경에서는
-NETLIFY_DATABASE_URL=your_neon_database_url
-
-# 데이터베이스 타입 명시 (선택사항)
-REACT_APP_DATABASE_TYPE=neon
 ```
 
 ### 4. 개발 서버 실행
