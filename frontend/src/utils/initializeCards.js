@@ -68,15 +68,6 @@ export async function initializeTarotCards() {
       console.log(`📊 진행률: ${insertedCount}/${tarotCardsData.length} (${Math.round(insertedCount/tarotCardsData.length*100)}%)`);
     }
 
-    // 4. 삽입 결과 확인
-    const { error: finalError } = await supabase
-      .from('tarot_cards')
-      .select('count');
-
-    if (finalError) {
-      console.warn('최종 확인 중 오류:', finalError);
-    }
-
     console.log('✅ 타로카드 데이터 초기화 완료!');
     return {
       success: true,
