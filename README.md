@@ -2,7 +2,7 @@
 
 신비로운 타로카드 리딩을 제공하는 현대적인 웹 애플리케이션입니다. React와 Supabase를 활용하여 구축되었으며, 전통적인 Rider-Waite 타로덱의 78장 카드를 통해 과거-현재-미래 스프레드 리딩을 제공합니다.
 
-<!-- Trigger Vercel redeploy with latest commit -->
+<!-- Force Vercel redeploy - 2024 -->
 
 ## ✨ 주요 기능
 
